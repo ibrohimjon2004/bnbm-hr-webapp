@@ -1,3 +1,354 @@
-<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNBM Central Asia HR</title><script src="https://telegram.org/js/telegram-web-app.js"></script><style>:root{--red:#bd1829;--bg:#f5f6f8;--ink:#17202d;--muted:#687381}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}header{background:#fff;border-bottom:3px solid var(--red);padding:17px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}header b{color:var(--red);font-size:21px}header small{display:block;color:var(--muted)}main{max-width:720px;margin:24px auto;padding:0 15px 35px}.panel{background:#fff;border:1px solid #e4e7ec;border-radius:15px;padding:22px;margin-bottom:16px;box-shadow:0 3px 15px #1a26300a}h1{font-size:23px;margin:0 0 7px}h2{font-size:19px;margin:0 0 13px}p{margin:5px 0 14px;color:var(--muted)}button{cursor:pointer;border:1px solid #e2e5e9;background:white;border-radius:10px;padding:12px 14px;font:inherit;color:inherit}button:hover{border-color:var(--red)}button.primary{background:var(--red);color:white;border-color:var(--red);font-weight:650}button:disabled{opacity:.5;cursor:not-allowed}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.choice{text-align:left;min-height:80px;font-weight:600}.choice small{display:block;color:var(--muted);font-weight:400}.lang{display:flex;gap:5px}.lang button{padding:6px 9px}.active{border-color:var(--red)!important;background:#fff4f5!important;color:#9f1221!important}.steps{color:var(--red);font-size:13px;font-weight:700;margin-bottom:10px}.field{margin:14px 0}.field label{display:block;font-weight:600;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd1d9;border-radius:9px;padding:12px;font:inherit;background:#fff}.field textarea{min-height:90px;resize:vertical}.actions{display:flex;gap:10px;justify-content:space-between;margin-top:20px}.actions button{flex:1}.hidden{display:none}.notice{background:#fff8e9;border:1px solid #efd7a4;padding:12px;border-radius:10px;color:#76551e;font-size:13px;margin-top:12px}.pill{font-size:12px;background:#f2f3f6;border-radius:20px;padding:5px 9px}.summary{white-space:pre-wrap;background:#f7f8fa;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}.muted{color:var(--muted)}@media(max-width:430px){.grid{grid-template-columns:1fr}.panel{padding:17px}}</style></head><body><header><div><b>BNBM</b><small>Central Asia · HR</small></div><div class="lang"><button id="uz" class="active" onclick="setLang('uz')">O‘zbekcha</button><button id="zh" onclick="setLang('zh')">中文</button></div></header><main><section id="home" class="panel"><h1 data-uz="Ishga qabul qilish" data-zh="招聘申请">Ishga qabul qilish</h1><p data-uz="Bo‘limni tanlang va bo‘sh ish o‘rinlari bilan tanishing." data-zh="请选择部门并查看招聘岗位。">Bo‘limni tanlang va bo‘sh ish o‘rinlari bilan tanishing.</p><div class="grid"><button class="choice" onclick="department('sales')"><span data-uz="Savdo bo‘limi" data-zh="销售部">Savdo bo‘limi</span><small data-uz="Mijozlar bilan ishlash" data-zh="客户与销售">Mijozlar bilan ishlash</small></button><button class="choice" onclick="department('production')"><span data-uz="Ishlab chiqarish bo‘limi" data-zh="生产部">Ishlab chiqarish bo‘limi</span><small data-uz="Zavod va ishlab chiqarish" data-zh="工厂与生产">Zavod va ishlab chiqarish</small></button></div><div class="notice" data-uz="Bu versiyada ariza serverga yuborilmaydi. Shaxsiy ma’lumotlarni hozircha kiritmang." data-zh="当前版本不会向服务器提交申请，请暂勿填写真实个人信息。">Bu versiyada ariza serverga yuborilmaydi. Shaxsiy ma’lumotlarni hozircha kiritmang.</div></section><section id="vacancies" class="panel hidden"><button onclick="show('home')">← <span data-uz="Orqaga" data-zh="返回">Orqaga</span></button><h2 id="deptTitle" style="margin-top:16px"></h2><div id="vacancyList"></div></section><section id="description" class="panel hidden"><button onclick="show('vacancies')">← <span data-uz="Orqaga" data-zh="返回">Orqaga</span></button><h2 id="jobTitle" style="margin-top:16px"></h2><p id="jobDescription" style="white-space:pre-line"></p><button class="primary" onclick="startForm()" data-uz="Anketani ko‘rish" data-zh="查看申请表">Anketani ko‘rish</button></section><section id="application" class="panel hidden"><div class="steps" id="progress"></div><h2 id="questionTitle"></h2><div id="questionInput"></div><div class="actions"><button onclick="previous()" data-uz="Orqaga" data-zh="返回">Orqaga</button><button class="primary" onclick="next()" id="nextButton" data-uz="Keyingi" data-zh="下一步">Keyingi</button></div><div class="notice" data-uz="Sinov rejimi: anketa faqat ekranda ko‘rsatiladi, saqlanmaydi yoki yuborilmaydi." data-zh="演示模式：申请表仅供预览，不会保存或发送。">Sinov rejimi: anketa faqat ekranda ko‘rsatiladi, saqlanmaydi yoki yuborilmaydi.</div></section><section id="review" class="panel hidden"><h2 data-uz="Anketa tuzilmasi tayyor" data-zh="申请表结构已准备就绪">Anketa tuzilmasi tayyor</h2><p data-uz="Quyida savollar ko‘rib chiqiladi. Arizani yuborish server ulangandan so‘ng ishga tushadi." data-zh="以下是申请表预览。提交功能将在连接服务器后启用。">Quyida savollar ko‘rib chiqiladi. Arizani yuborish server ulangandan so‘ng ishga tushadi.</p><div class="summary" id="summary"></div><div class="actions"><button onclick="show('application')" data-uz="Tahrirlash" data-zh="编辑">Tahrirlash</button><button disabled class="primary" data-uz="Yuborish (server ulanmagan)" data-zh="提交（服务器未连接）">Yuborish (server ulanmagan)</button></div></section></main><script>
-const T={uz:'uz',zh:'zh'};let lang='uz',dept='sales',job=null,step=0,answers={};const jobs=[{id:'sales',dep:'sales',name:{uz:'Savdo mutaxassisi',zh:'销售专员'},desc:{uz:'Savdo bo‘yicha mijozlar bilan ishlash. Batafsil ma’lumot HR menejeridan olinadi.',zh:'负责销售及客户沟通。详细信息请咨询人力资源经理。'}},{id:'crane',dep:'production',name:{uz:'Kran haydovchisi',zh:'起重机司机'},desc:{uz:'Vazifalar: yuklarni ko‘tarish, tushirish va ko‘chirish; kranni xavfsiz boshqarish; texnik holatini tekshirish.\nTalablar: kran boshqarish tajribasi, mas’uliyat va texnika xavfsizligiga rioya qilish. Tegishli guvohnoma bo‘lsa, afzallik beradi.\nIsh tartibi: 12 soatlik smena, 3 mahal bepul ovqat. Ish haqi suhbatda kelishiladi.',zh:'工作职责：负责货物吊装、卸载和转运；安全操作起重机；检查设备技术状况。\n任职要求：具有起重机操作经验，工作认真负责并遵守安全规定。持有相关操作证者优先。\n工作安排：12小时轮班，提供每日三餐。薪资面议。'}}];
-const questions=[['gender','Jinsingizni tanlang','请选择您的性别','select',[['Erkak','男'],['Ayol','女']]],['first_name','Pasportingiz bo‘yicha ismingiz','请输入您护照上的名字','text'],['last_name','Pasportingiz bo‘yicha familiyangiz','请输入您护照上的姓氏','text'],['birth_date','Tug‘ilgan sana (kun.oy.yil)','出生日期（日.月.年）','date'],['marital','Oilaviy holatingiz','婚姻状况','select',[['Uylangan / Turmushga chiqqan','已婚'],['Bo‘ydoq / Turmushga chiqmagan','未婚'],['Ajrashgan','离异'],['Beva','丧偶']]],['address','Turar joy manzili (viloyat, tuman, ko‘cha)','居住地址（州/市、区、街道）','textarea'],['phone','Telefon raqamingiz','联系电话','tel'],['russian','Rus tilini qay darajada bilasiz?','您的俄语水平如何？','select',[['Umuman bilmayman','不会'],['Boshlang‘ich','初级'],['O‘rta','中级'],['Yaxshi','良好'],['Erkin muloqot qila olaman','流利']]],['student','Hozirda talabamisiz?','您目前是在校学生吗？','select',[['Ha','是'],['Yo‘q','否']]],['shifts','O‘zgaruvchan smenada ishlashga tayyormisiz?','您是否能够接受轮班工作？','select',[['Ha','是'],['Yo‘q','否']]],['experience','Ish joyi, lavozim va ishlagan muddatingiz','工作单位、职位和工作时间','textarea'],['salary','Kutilayotgan oylik ish haqi (so‘m)','期望月薪（苏姆）','text']];const extra=[['crane_type','Qaysi turdagi kranni boshqargansiz va necha yil tajribangiz bor?','操作过哪些类型的起重机？有多少年经验？','textarea'],['certificate','Kran haydovchisi guvohnomangiz yoki malaka sertifikatingiz bormi?','是否持有起重机操作证或资格证书？','select',[['Ha','是'],['Yo‘q','否']]]];const photo=['photo','Fotosuratingizni tanlang','请上传您的照片','file'];function qs(){return [...questions,...(job?.id==='crane'?extra:[]),photo]}function show(id){document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo(0,0)}function translate(){document.documentElement.lang=lang;document.querySelectorAll('[data-uz]').forEach(x=>x.textContent=x.dataset[lang]);document.getElementById('uz').classList.toggle('active',lang==='uz');document.getElementById('zh').classList.toggle('active',lang==='zh');document.getElementById('deptTitle').textContent=dept==='sales'?(lang==='uz'?'Savdo bo‘limi':'销售部'):(lang==='uz'?'Ishlab chiqarish bo‘limi':'生产部');if(job){document.getElementById('jobTitle').textContent=job.name[lang];document.getElementById('jobDescription').textContent=job.desc[lang]}if(!document.getElementById('application').classList.contains('hidden'))renderQ();if(!document.getElementById('vacancies').classList.contains('hidden'))renderJobs()}function setLang(l){lang=l;translate()}function department(d){dept=d;renderJobs();show('vacancies')}function renderJobs(){document.getElementById('deptTitle').textContent=dept==='sales'?(lang==='uz'?'Savdo bo‘limi':'销售部'):(lang==='uz'?'Ishlab chiqarish bo‘limi':'生产部');document.getElementById('vacancyList').replaceChildren(...jobs.filter(x=>x.dep===dept).map(x=>{const b=document.createElement('button');b.style.cssText='display:block;width:100%;text-align:left;margin:10px 0';b.textContent=x.name[lang]+'  →';b.onclick=()=>choose(x.id);return b}))}function choose(id){job=jobs.find(x=>x.id===id);document.getElementById('jobTitle').textContent=job.name[lang];document.getElementById('jobDescription').textContent=job.desc[lang];show('description')}function startForm(){step=0;answers={};renderQ();show('application')}function renderQ(){const q=qs()[step],el=document.getElementById('questionInput');document.getElementById('progress').textContent=(lang==='uz'?'Savol ':'问题 ')+(step+1)+' / '+qs().length;document.getElementById('questionTitle').textContent=(step+1)+'. '+q[lang==='uz'?1:2];el.replaceChildren();const box=document.createElement('div');box.className='field';let inp;if(q[3]==='select'){inp=document.createElement('select');const blank=document.createElement('option');blank.value='';blank.textContent=lang==='uz'?'Tanlang':'请选择';inp.append(blank);q[4].forEach(pair=>{const o=document.createElement('option');o.value=pair[0];o.textContent=pair[lang==='uz'?0:1];inp.append(o)})}else if(q[3]==='textarea'){inp=document.createElement('textarea')}else{inp=document.createElement('input');inp.type=q[3]==='file'?'file':q[3]==='tel'?'tel':'text';if(q[3]==='file')inp.accept='image/*';if(q[3]==='date')inp.placeholder='18.03.1995';if(q[3]==='tel')inp.placeholder='+998901234567'}inp.id='answer';if(q[3]!=='file')inp.value=answers[q[0]]||'';box.append(inp);el.append(box);document.getElementById('nextButton').textContent=step===qs().length-1?(lang==='uz'?'Ko‘rib chiqish':'预览'):(lang==='uz'?'Keyingi':'下一步')}function next(){const q=qs()[step],inp=document.getElementById('answer');let val=q[3]==='file'?(inp.files[0]?.name||answers[q[0]]||''):inp.value.trim();if(!val){alert(lang==='uz'?'Iltimos, javobni kiriting.':'请填写此项。');return}if(q[0]==='birth_date'&&!/^\d{2}\.\d{2}\.\d{4}$/.test(val)){alert('18.03.1995');return}if(q[0]==='phone'&&!/^\+?[0-9 ()-]{9,20}$/.test(val)){alert(lang==='uz'?'Telefon raqamini tekshiring.':'请检查电话号码。');return}answers[q[0]]=val;if(step<qs().length-1){step++;renderQ()}else{const lines=[job.name[lang],...qs().map((x,i)=>(i+1)+'. '+x[lang==='uz'?1:2]+'\n'+(x[4]?.find(p=>p[0]===answers[x[0]])?.[lang==='uz'?0:1]||answers[x[0]]||''))];document.getElementById('summary').textContent=lines.join('\n\n');show('review')}}function previous(){if(step===0){show('description')}else{step--;renderQ()}}window.Telegram?.WebApp?.ready();window.Telegram?.WebApp?.expand();translate();</script></body></html>
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BNBM Central Asia HR</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--red:#bd1829;--bg:#f5f6f8;--ink:#17202d;--muted:#687381}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}header{background:#fff;border-bottom:3px solid var(--red);padding:17px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}header b{color:var(--red);font-size:21px}header small{display:block;color:var(--muted)}main{max-width:720px;margin:24px auto;padding:0 15px 35px}.panel{background:#fff;border:1px solid #e4e7ec;border-radius:15px;padding:22px;margin-bottom:16px;box-shadow:0 3px 15px #1a26300a}h1{font-size:23px;margin:0 0 7px}h2{font-size:19px;margin:0 0 13px}p{margin:5px 0 14px;color:var(--muted)}button{cursor:pointer;border:1px solid #e2e5e9;background:white;border-radius:10px;padding:12px 14px;font:inherit;color:inherit}button:hover{border-color:var(--red)}button.primary{background:var(--red);color:white;border-color:var(--red);font-weight:650}button:disabled{opacity:.5;cursor:not-allowed}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.choice{text-align:left;min-height:80px;font-weight:600}.choice small{display:block;color:var(--muted);font-weight:400}.lang{display:flex;gap:5px}.lang button{padding:6px 9px}.active{border-color:var(--red)!important;background:#fff4f5!important;color:#9f1221!important}.steps{color:var(--red);font-size:13px;font-weight:700;margin-bottom:10px}.field{margin:14px 0}.field label{display:block;font-weight:600;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd1d9;border-radius:9px;padding:12px;font:inherit;background:#fff}.field textarea{min-height:90px;resize:vertical}.actions{display:flex;gap:10px;justify-content:space-between;margin-top:20px}.actions button{flex:1}.hidden{display:none}.notice{background:#fff8e9;border:1px solid #efd7a4;padding:12px;border-radius:10px;color:#76551e;font-size:13px;margin-top:12px}.pill{font-size:12px;background:#f2f3f6;border-radius:20px;padding:5px 9px}.summary{white-space:pre-wrap;background:#f7f8fa;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}.muted{color:var(--muted)}@media(max-width:430px){.grid{grid-template-columns:1fr}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+  <div><b>BNBM</b><small>Central Asia · HR</small></div>
+  <div class="lang">
+    <button id="uz" class="active" onclick="setLang('uz')">O‘zbekcha</button>
+    <button id="zh" onclick="setLang('zh')">中文</button>
+  </div>
+</header>
+<main>
+  <section id="home" class="panel">
+    <h1 data-uz="Ishga qabul qilish" data-zh="招聘申请">Ishga qabul qilish</h1>
+    <p data-uz="Bo‘limni tanlang va bo‘sh ish o‘rinlari bilan tanishing." data-zh="请选择部门并查看招聘岗位。"></p>
+    <div class="grid">
+      <button id="sales" class="choice" onclick="department('sales')" disabled>
+        <span data-uz="Savdo bo‘limi" data-zh="销售部"></span>
+        <small data-uz="Mijozlar bilan ishlash" data-zh="客户与销售"></small>
+      </button>
+      <button id="production" class="choice" onclick="department('production')" disabled>
+        <span data-uz="Ishlab chiqarish bo‘limi" data-zh="生产部"></span>
+        <small data-uz="Zavod va ishlab chiqarish" data-zh="工厂与生产"></small>
+      </button>
+    </div>
+    <div id="connectionStatus" class="notice" role="status" aria-live="polite"></div>
+    <button id="retry" class="hidden" onclick="initialize()" data-uz="Qayta urinish" data-zh="重试"></button>
+  </section>
+  <section id="vacancies" class="panel hidden">
+    <button onclick="show('home')">← <span data-uz="Orqaga" data-zh="返回"></span></button>
+    <h2 id="deptTitle" style="margin-top:16px"></h2>
+    <div id="vacancyList"></div>
+  </section>
+  <section id="description" class="panel hidden">
+    <button onclick="show('vacancies')">← <span data-uz="Orqaga" data-zh="返回"></span></button>
+    <h2 id="jobTitle" style="margin-top:16px"></h2>
+    <p id="jobDescription" style="white-space:pre-line"></p>
+    <button class="primary" onclick="startForm()" data-uz="Anketani to‘ldirish" data-zh="填写申请表"></button>
+  </section>
+  <section id="application" class="panel hidden">
+    <div class="steps" id="progress"></div>
+    <h2 id="questionTitle"></h2>
+    <div id="questionInput"></div>
+    <div class="actions">
+      <button onclick="previous()" data-uz="Orqaga" data-zh="返回"></button>
+      <button class="primary" onclick="next()" id="nextButton"></button>
+    </div>
+  </section>
+  <section id="review" class="panel hidden">
+    <h2 data-uz="Arizani tekshiring" data-zh="请核对申请信息"></h2>
+    <p data-uz="Ma’lumotlaringizni tekshiring va yuborishni tasdiqlang." data-zh="请核对您的信息并确认提交。"></p>
+    <div class="summary" id="summary"></div>
+    <div style="margin-top:16px">
+      <label><input type="checkbox" id="consent" onchange="renderSubmitState()">
+        <span data-uz="Ishga qabul qilish maqsadida shaxsiy ma’lumotlarimni qayta ishlashga roziman." data-zh="我同意为招聘目的处理我的个人信息。"></span>
+      </label>
+    </div>
+    <div id="submitError" class="notice hidden" role="alert"></div>
+    <div class="actions">
+      <button id="editButton" onclick="editForm()" data-uz="Tahrirlash" data-zh="编辑"></button>
+      <button id="submitButton" class="primary" onclick="submitApplication()" disabled></button>
+    </div>
+  </section>
+  <section id="success" class="panel hidden">
+    <h2 data-uz="Arizangiz qabul qilindi" data-zh="您的申请已收到"></h2>
+    <p id="confirmation" role="status"></p>
+    <button class="primary" onclick="show('home')" data-uz="Bosh sahifa" data-zh="返回首页"></button>
+  </section>
+</main>
+<script>
+const questions=[['gender','Jinsingizni tanlang','请选择您的性别','select',[['Erkak','男'],['Ayol','女']]],['first_name','Pasportingiz bo‘yicha ismingiz','请输入您护照上的名字','text'],['last_name','Pasportingiz bo‘yicha familiyangiz','请输入您护照上的姓氏','text'],['birth_date','Tug‘ilgan sana (kun.oy.yil)','出生日期（日.月.年）','date'],['marital','Oilaviy holatingiz','婚姻状况','select',[['Uylangan / Turmushga chiqqan','已婚'],['Bo‘ydoq / Turmushga chiqmagan','未婚'],['Ajrashgan','离异'],['Beva','丧偶']]],['address','Turar joy manzili (viloyat, tuman, ko‘cha)','居住地址（州/市、区、街道）','textarea'],['phone','Telefon raqamingiz','联系电话','tel'],['russian','Rus tilini qay darajada bilasiz?','您的俄语水平如何？','select',[['Umuman bilmayman','不会'],['Boshlang‘ich','初级'],['O‘rta','中级'],['Yaxshi','良好'],['Erkin muloqot qila olaman','流利']]],['student','Hozirda talabamisiz?','您目前是在校学生吗？','select',[['Ha','是'],['Yo‘q','否']]],['shifts','O‘zgaruvchan smenada ishlashga tayyormisiz?','您是否能够接受轮班工作？','select',[['Ha','是'],['Yo‘q','否']]],['experience','Ish joyi, lavozim va ishlagan muddatingiz','工作单位、职位和工作时间','textarea'],['salary','Kutilayotgan oylik ish haqi (so‘m)','期望月薪（苏姆）','text']];const extra=[['crane_type','Qaysi turdagi kranni boshqargansiz va necha yil tajribangiz bor?','操作过哪些类型的起重机？有多少年经验？','textarea'],['certificate','Kran haydovchisi guvohnomangiz yoki malaka sertifikatingiz bormi?','是否持有起重机操作证或资格证书？','select',[['Ha','是'],['Yo‘q','否']]]];const photo=['photo','Fotosuratingizni tanlang','请上传您的照片','file'];
+'use strict';
+let lang = 'uz', dept = 'sales', job = null, step = 0, answers = {};
+let jobs = [], photoFile = null, connected = false, loading = false, submitting = false;
+let connection = 'loading', connectionError = null, submissionError = null, applicationId = null;
+const $ = id => document.getElementById(id);
+const text = (uz, zh) => lang === 'uz' ? uz : zh;
+const messages = {
+  loading: ['Vakansiyalar yuklanmoqda…', '正在加载岗位…'],
+  telegram: ['Ariza topshirish uchun ilovani Telegram botidagi tugma orqali oching.', '请通过 Telegram 机器人中的按钮打开此应用以提交申请。'],
+  ready: ['Vakansiyani tanlab, arizangizni yuborishingiz mumkin.', '请选择岗位并提交申请。'],
+  session: ['Telegram sessiyasi tugagan yoki noto‘g‘ri. Ilovani bot orqali qayta oching.', 'Telegram 会话已过期或无效，请通过机器人重新打开。'],
+  unavailable: ['Xizmatga ulanib bo‘lmadi. Keyinroq qayta urinib ko‘ring.', '无法连接服务，请稍后重试。'],
+  configuration: ['Xizmat hozircha tayyor emas. Keyinroq qayta urinib ko‘ring.', '服务暂未就绪，请稍后重试。'],
+  validation: ['Ma’lumotlar va fotosuratni tekshiring.', '请检查填写的信息和照片。'],
+  photo: ['Yaroqli fotosurat tanlang. Hajmi 5 MB dan oshmasin.', '请选择有效照片，大小不能超过 5 MB。'],
+  closed: ['Vakansiya yopilgan yoki topilmadi. Bosh sahifadan boshqa vakansiyani tanlang.', '该岗位已关闭或不存在，请返回首页选择其他岗位。']
+};
+function message(key) { return messages[key]?.[lang === 'uz' ? 0 : 1] || messages.unavailable[lang === 'uz' ? 0 : 1]; }
+function errorMessage(error) {
+  // Backend validation details are Uzbek; use a localized fallback in Chinese.
+  return lang === 'uz' && error?.status === 422 && typeof error.detail === 'string'
+    ? error.detail : message(error?.key || 'unavailable');
+}
+async function api(path, options = {}) {
+  let response;
+  try {
+    response = await fetch(path, {
+      ...options,
+      headers: {'X-Telegram-Init-Data': window.Telegram?.WebApp?.initData || ''}
+    });
+  } catch (_) { throw {key: 'unavailable'}; }
+  const data = await response.json().catch(() => null);
+  if (!response.ok) {
+    const key = response.status === 401 ? 'session'
+      : response.status === 503 ? 'configuration'
+      : response.status === 413 ? 'photo'
+      : response.status === 422 ? 'validation'
+      : response.status === 404 && options.method === 'POST' ? 'closed' : 'unavailable';
+    throw {key, status: response.status, detail: data?.detail};
+  }
+  if (data === null) throw {key: 'unavailable'};
+  return data;
+}
+async function initialize() {
+  if (loading) return;
+  connected = false;
+  connectionError = null;
+  $('sales').disabled = $('production').disabled = true;
+  if (!window.Telegram?.WebApp?.initData) {
+    connection = 'telegram';
+    renderConnection();
+    return;
+  }
+  loading = true;
+  connection = 'loading';
+  renderConnection();
+  try {
+    await api('/api/me');
+    const vacancies = await api('/api/vacancies');
+    if (!Array.isArray(vacancies)) throw {key: 'unavailable'};
+    jobs = vacancies;
+    connected = true;
+    connection = 'ready';
+    $('sales').disabled = $('production').disabled = false;
+  } catch (error) {
+    connectionError = error;
+    connection = 'error';
+  } finally {
+    loading = false;
+    renderConnection();
+  }
+}
+function renderConnection() {
+  $('connectionStatus').textContent = connectionError ? errorMessage(connectionError) : message(connection);
+  $('retry').classList.toggle('hidden', !['error', 'telegram'].includes(connection));
+}
+function qs() {
+  const custom = (job?.questions || []).map(q => [`extra_${q.id}`, q.question_uz, q.question_zh, 'textarea']);
+  return [...questions, ...(job?.title_uz.toLowerCase().includes('kran') ? extra : []), ...custom, photo];
+}
+function jobName() { return job?.[lang === 'uz' ? 'title_uz' : 'title_zh'] || ''; }
+function show(id) {
+  document.querySelectorAll('main>section').forEach(section => section.classList.add('hidden'));
+  $(id).classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+function translate() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-uz]').forEach(el => el.textContent = el.dataset[lang]);
+  $('uz').classList.toggle('active', lang === 'uz');
+  $('zh').classList.toggle('active', lang === 'zh');
+  renderConnection();
+  renderJobs();
+  if (job) {
+    $('jobTitle').textContent = jobName();
+    $('jobDescription').textContent = job[lang === 'uz' ? 'description_uz' : 'description_zh'];
+  }
+  if (!$('application').classList.contains('hidden')) renderQ();
+  if (!$('review').classList.contains('hidden')) renderReview();
+  if (applicationId !== null) renderConfirmation();
+  renderSubmitState();
+}
+function setLang(value) {
+  if (!$('application').classList.contains('hidden')) saveCurrent();
+  lang = value;
+  translate();
+}
+function department(value) {
+  if (!connected) return;
+  dept = value;
+  renderJobs();
+  show('vacancies');
+}
+function renderJobs() {
+  $('deptTitle').textContent = dept === 'sales' ? text('Savdo bo‘limi', '销售部') : text('Ishlab chiqarish bo‘limi', '生产部');
+  const vacancies = jobs.filter(v => v.department === (dept === 'sales' ? 'Savdo' : 'Ishlab chiqarish'));
+  $('vacancyList').replaceChildren(...vacancies.map(v => {
+    const button = document.createElement('button');
+    button.style.cssText = 'display:block;width:100%;text-align:left;margin:10px 0';
+    button.textContent = v[lang === 'uz' ? 'title_uz' : 'title_zh'] + ' →';
+    button.onclick = () => choose(v.id);
+    return button;
+  }));
+  if (!vacancies.length) $('vacancyList').textContent = text('Hozircha ochiq vakansiyalar yo‘q.', '暂无开放岗位。');
+}
+function choose(id) {
+  job = jobs.find(v => v.id === id);
+  if (!job) return;
+  translate();
+  show('description');
+}
+function startForm() {
+  if (!connected || !job) return;
+  step = 0;
+  answers = {};
+  photoFile = null;
+  submissionError = null;
+  $('consent').checked = false;
+  renderQ();
+  show('application');
+}
+function saveCurrent() {
+  const input = $('answer'), q = qs()[step];
+  if (!input || !q) return;
+  if (q[3] === 'file') photoFile = input.files[0] || photoFile;
+  else answers[q[0]] = input.value.trim();
+}
+function renderQ() {
+  const list = qs(), q = list[step];
+  $('progress').textContent = text('Savol ', '问题 ') + (step + 1) + ' / ' + list.length;
+  $('questionTitle').textContent = (step + 1) + '. ' + q[lang === 'uz' ? 1 : 2];
+  const box = document.createElement('div');
+  box.className = 'field';
+  let input;
+  if (q[3] === 'select') {
+    input = document.createElement('select');
+    const blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = text('Tanlang', '请选择');
+    input.append(blank);
+    q[4].forEach(pair => {
+      const option = document.createElement('option');
+      option.value = pair[0];
+      option.textContent = pair[lang === 'uz' ? 0 : 1];
+      input.append(option);
+    });
+  } else if (q[3] === 'textarea') input = document.createElement('textarea');
+  else {
+    input = document.createElement('input');
+    input.type = q[3] === 'file' ? 'file' : q[3] === 'tel' ? 'tel' : 'text';
+    if (q[3] === 'file') input.accept = 'image/*';
+    if (q[3] === 'date') input.placeholder = '18.03.1995';
+    if (q[3] === 'tel') input.placeholder = '+998901234567';
+  }
+  input.id = 'answer';
+  input.setAttribute('aria-labelledby', 'questionTitle');
+  if (q[3] !== 'file') {
+    input.value = answers[q[0]] || '';
+    input.maxLength = 2000;
+  }
+  box.append(input);
+  if (q[3] === 'file') {
+    const hint = document.createElement('p');
+    hint.textContent = photoFile ? photoFile.name : text('Fotosurat: 5 MB gacha.', '照片：不超过 5 MB。');
+    box.append(hint);
+  }
+  $('questionInput').replaceChildren(box);
+  $('nextButton').textContent = step === list.length - 1 ? text('Ko‘rib chiqish', '预览') : text('Keyingi', '下一步');
+}
+function next() {
+  const q = qs()[step];
+  saveCurrent();
+  const value = q[3] === 'file' ? photoFile : answers[q[0]];
+  if (!value) { alert(text('Iltimos, javobni kiriting.', '请填写此项。')); return; }
+  if (q[0] === 'birth_date') {
+    const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value);
+    const date = match && new Date(`${match[3]}-${match[2]}-${match[1]}T00:00:00Z`);
+    if (!match || !Number.isFinite(date.getTime()) || date.getUTCDate() !== Number(match[1]) || date.getUTCMonth() + 1 !== Number(match[2])) {
+      alert(text('Tug‘ilgan sanani tekshiring. Masalan: 18.03.1995', '请检查出生日期，例如：18.03.1995')); return;
+    }
+  }
+  if (q[0] === 'phone' && !/^\+?[0-9 ()-]{9,20}$/.test(value)) {
+    alert(text('Telefon raqamini tekshiring.', '请检查电话号码。')); return;
+  }
+  if (q[3] === 'file' && (photoFile.size > 5 * 1024 * 1024 || !photoFile.type.startsWith('image/'))) {
+    alert(message('photo')); return;
+  }
+  if (step < qs().length - 1) { step++; renderQ(); }
+  else { renderReview(); show('review'); }
+}
+function previous() {
+  saveCurrent();
+  if (step === 0) show('description');
+  else { step--; renderQ(); }
+}
+function renderReview() {
+  const lines = [jobName(), ...qs().map((q, i) => {
+    const value = q[3] === 'file' ? photoFile?.name : (q[4]?.find(pair => pair[0] === answers[q[0]])?.[lang === 'uz' ? 0 : 1] || answers[q[0]]);
+    return (i + 1) + '. ' + q[lang === 'uz' ? 1 : 2] + '\n' + (value || '');
+  })];
+  $('summary').textContent = lines.join('\n\n');
+  renderSubmitState();
+}
+function editForm() {
+  if (submitting) return;
+  submissionError = null;
+  renderQ();
+  show('application');
+}
+function renderSubmitState() {
+  $('submitButton').disabled = submitting || !$('consent').checked;
+  $('editButton').disabled = $('consent').disabled = submitting;
+  $('submitButton').textContent = submitting ? text('Yuborilmoqda…', '正在提交…') : text('Arizani yuborish', '提交申请');
+  $('submitError').classList.toggle('hidden', !submissionError);
+  $('submitError').textContent = submissionError ? errorMessage(submissionError) : '';
+}
+async function submitApplication() {
+  if (submitting || !connected || !photoFile || !$('consent').checked) return;
+  submitting = true;
+  submissionError = null;
+  renderSubmitState();
+  const data = new FormData();
+  data.append('vacancy_id', String(job.id));
+  data.append('language', lang);
+  data.append('answers', JSON.stringify(answers));
+  data.append('photo', photoFile);
+  data.append('consent', 'yes');
+  try {
+    const result = await api('/api/applications', {method: 'POST', body: data});
+    if (result.ok !== true || !Number.isInteger(result.id)) throw {key: 'unavailable'};
+    applicationId = result.id;
+    answers = {};
+    photoFile = null;
+    $('questionInput').replaceChildren();
+    $('summary').textContent = '';
+    $('consent').checked = false;
+    renderConfirmation();
+    show('success');
+  } catch (error) {
+    submissionError = error;
+  } finally {
+    submitting = false;
+    renderSubmitState();
+  }
+}
+function renderConfirmation() {
+  $('confirmation').textContent = text('Ariza raqami: ', '申请编号：') + applicationId;
+}
+window.Telegram?.WebApp?.ready();
+window.Telegram?.WebApp?.expand();
+translate();
+initialize();
+</script>
+</body>
+</html>
