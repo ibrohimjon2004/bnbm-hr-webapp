@@ -82,6 +82,10 @@ let lang = 'uz', dept = 'sales', job = null, step = 0, answers = {};
 let jobs = [], photoFile = null, connected = false, loading = false, submitting = false;
 let connection = 'loading', connectionError = null, submissionError = null, applicationId = null;
 const $ = id => document.getElementById(id);
+// Preserve the existing Mini App URL and Telegram bridge on the static host.
+// Backend-hosted and local copies continue using their own origin.
+const API_BASE = location.origin === 'https://bnbm-hr-webapp.onrender.com'
+  ? 'https://bnbm-hr-server.onrender.com' : '';
 const text = (uz, zh) => lang === 'uz' ? uz : zh;
 const messages = {
   loading: ['Vakansiyalar yuklanmoqda…', '正在加载岗位…'],
@@ -103,7 +107,7 @@ function errorMessage(error) {
 async function api(path, options = {}) {
   let response;
   try {
-    response = await fetch(path, {
+    response = await fetch(API_BASE + path, {
       ...options,
       headers: {'X-Telegram-Init-Data': window.Telegram?.WebApp?.initData || ''}
     });
